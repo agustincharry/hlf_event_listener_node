@@ -1,4 +1,4 @@
-import { Contract, ContractEvent } from "fabric-network";
+import { Contract, ContractEvent, ContractListener, DefaultCheckpointers, Checkpointer } from "fabric-network";
 import { WalletManager } from './WalletManager'
 
 class App {
@@ -18,7 +18,7 @@ class App {
         
         const contract: Contract = await WalletManager.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName)
 
-        await this.callFunction(contract);
+        //await this.callFunction(contract);
 
         await this.eventListener(contract);
     }
@@ -37,7 +37,9 @@ class App {
             console.log("Event: " + event.eventName + ". Payload: " + payload);
         };
         console.log("Event listener started...")
-        contract.addContractListener(listener);
+
+        const checkpointer: Checkpointer = await DefaultCheckpointers.file('checkPointer');
+        const contractListener: ContractListener = await contract.addContractListener(listener, {checkpointer});
     }
 }
 
