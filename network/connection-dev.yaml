@@ -1,0 +1,84 @@
+---
+name: test-network-org
+version: 1.0.0
+client:
+  organization: Org0
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+  tlsCerts:
+    systemCertPool: false
+    client:
+      key:
+        path: certs/tls/client.key
+      cert:
+        path: certs/tls/client.crt
+
+organizations:
+  Org0:
+    mspid: Org0
+    peers:
+      - org0-peer0
+
+orderers:
+  orderer0:
+    url: grpc://192.168.49.2:30100
+    tlsCACerts:
+      path: certs/orderer/tlsca.consortium-cert.pem
+    grpcOptions:
+      ssl-target-name-override: orderer0
+      hostnameOverride: orderer0
+
+peers:
+  org0-peer0:
+    url: grpcs://192.168.49.2:30200
+    tlsCACerts:
+      path: certs/tls/ca.crt
+    grpcOptions:
+      ssl-target-name-override: org0-peer0
+      hostnameOverride: org0-peer0
+
+channels:
+  mychannel:
+    peers:
+      org0-peer0:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+entityMatchers:
+  orderer:
+  - pattern: orderer0
+    urlSubstitutionExp: grpcs://192.168.49.2:30100
+    sslTargetOverrideUrlSubstitutionExp: orderer0
+    mappedHost: orderer0
+  peer:
+  - pattern: org0-peer0
+    urlSubstitutionExp: grpcs://192.168.49.2:30200
+    sslTargetOverrideUrlSubstitutionExp: org0-peer0
+    mappedHost: org0-peer0
+
+# TLS
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/User1@Org0/tls/ca.crt certs/tls
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/User1@Org0/tls/client.crt certs/tls
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/User1@Org0/tls/client.key certs/tls
+
+# MSP
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/User1@Org0/msp/signcerts/User1@Org0-cert.pem certs/msp
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/User1@Org0/msp/keystore/priv_sk certs/msp
+
+# -----------------------------------------------------------
+
+# TLS
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/Admin@Org0/tls/ca.crt certs/tls
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/Admin@Org0/tls/client.crt certs/tls
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/Admin@Org0/tls/client.key certs/tls
+
+# MSP
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/Admin@Org0/msp/signcerts/Admin@Org0-cert.pem certs/msp
+# kubectl cp fabric-tools:/data/crypto-config/peerOrganizations/Org0/users/Admin@Org0/msp/keystore/priv_sk certs/msp
+
+# Orderer
+# kubectl cp fabric-tools:/data/crypto-config/ordererOrganizations/consortium/tlsca/tlsca.consortium-cert.pem certs/orderer
