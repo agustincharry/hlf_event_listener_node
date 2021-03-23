@@ -2,15 +2,15 @@ import { Wallets, Wallet, Gateway, Network, Contract } from "fabric-network";
 import * as fs from "fs";
 import * as yaml from 'js-yaml';
 
-export class WalletManager {
+export class WalletHelper {
    
     static GetContractWithConfig = async function(walletPath: string, orgMSPId:string, walletIdentityLabel: string, certPathMSP: string, privateKeyPathMSP: string, certPathTLS: string, privateKeyPathTLS: string, connectionProfileFilePath: string, channelName: string, contractName: string): Promise<Contract>{
         const wallet: Wallet = await Wallets.newFileSystemWallet(walletPath);
         const walletIdentityLabelTLS = walletIdentityLabel + 'TLS';
-        WalletManager.PopulateWallet(wallet, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP);
-        WalletManager.PopulateWallet(wallet, orgMSPId, walletIdentityLabelTLS, certPathTLS, privateKeyPathTLS);
-        const gateway: Gateway = await WalletManager.ConnectToGateway(walletIdentityLabel, walletIdentityLabelTLS, wallet, connectionProfileFilePath);
-        const contract: Contract = await WalletManager.GetContract(gateway, channelName, contractName);
+        WalletHelper.PopulateWallet(wallet, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP);
+        WalletHelper.PopulateWallet(wallet, orgMSPId, walletIdentityLabelTLS, certPathTLS, privateKeyPathTLS);
+        const gateway: Gateway = await WalletHelper.ConnectToGateway(walletIdentityLabel, walletIdentityLabelTLS, wallet, connectionProfileFilePath);
+        const contract: Contract = await WalletHelper.GetContract(gateway, channelName, contractName);
         return contract;
     }
 

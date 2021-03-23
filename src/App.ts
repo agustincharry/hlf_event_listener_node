@@ -1,9 +1,14 @@
 import { Contract, ContractEvent, ContractListener, DefaultCheckpointers, Checkpointer } from "fabric-network";
-import { WalletManager } from './WalletManager'
+import * as dotenv from "dotenv";
+import { WalletHelper } from './WalletHelper'
+import { AWSHelper } from './AWSHelper'
+dotenv.config();
 
 class App {
-    main = async function() {
-
+    main = async function() {   
+        const data = await AWSHelper.getAWSSecret('nu0094001-blockchain-dev-PeerCouchDBSecrets');
+        console.log(data)
+        
         const walletPath: string = 'wallet';
         const orgMSPId: string = 'Org0';
         const walletIdentityLabel: string = 'Agus';
@@ -16,11 +21,11 @@ class App {
         const contractName = 'basic';
         
         
-        const contract: Contract = await WalletManager.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName)
+        const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName)
 
         //await this.callFunction(contract);
 
-        await this.eventListener(contract);
+        await this.eventListener(contract);             
     }
 
 
