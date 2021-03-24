@@ -17,9 +17,11 @@
     "fabric-network": "^2.2.5",
     "js-yaml": "^4.0.0",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "winston": "^2.4.5"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.0"
+    "@types/js-yaml": "^4.0.0",
+    "@types/winston": "^2.4.4"
   }
 }

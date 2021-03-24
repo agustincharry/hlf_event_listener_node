@@ -1,25 +1,27 @@
-import { Contract, ContractEvent, ContractListener, DefaultCheckpointers, Checkpointer } from "fabric-network";
+import { Contract, ContractEvent, DefaultCheckpointers, Checkpointer } from "fabric-network";
 import * as dotenv from "dotenv";
 import { WalletHelper } from './WalletHelper'
 import { AWSHelper } from './AWSHelper'
+import { log } from './LogHelper'
+
 dotenv.config();
 
 class App {
-    main = async function() {   
+    static main = async function() {
         /*
         const id = 'nu0094001-blockchain-dev-PeerCouchDBSecrets';
         //const id = 'nu0094001-blockchain-dev-ECDSA-Key-peer-2';
         const data = await AWSHelper.getAWSSecret(id);
-        console.log(data.SecretString)
+        log.info(data.SecretString)
         */
 
         /*
         const ARNCA = 'arn:aws:acm-pca:us-east-1:872308410481:certificate-authority/ee2eadae-1a4e-4034-9f22-cc2626854c20'
-        const ARNCert = '';
+        const ARNCert = 'arn:aws:acm-pca:us-east-1:872308410481:certificate-authority/ee2eadae-1a4e-4034-9f22-cc2626854c20/certificate/24b8806b62a3add92ba7befe34cdd321';
         const data2 = await AWSHelper.getCertByARN(ARNCert, ARNCA);
-        console.log(data2)*/
+        log.info(data2)*/
 
-
+        
         const walletPath: string = 'wallet';
         const walletIdentityLabel: string = 'TheWallet';
         const certPathMSP: string = 'certs/msp/Admin@Org0-cert.pem';
@@ -38,19 +40,20 @@ class App {
     }
 
 
-    callFunction = async function(contract: Contract){
+    static callFunction = async function(contract: Contract){
         const result=await contract.evaluateTransaction("QueryCouchDB", "{\"selector\":{}}")
-        console.log('Transaction has been submitted');
-        console.log(result.toString());
-        console.log('--------------------------------');
+        log.info('Transaction has been submitted');
+        log.info(result.toString());
+        log.info('--------------------------------');
     }
 
-    eventListener = async function(contract: Contract){
+    static eventListener = async function(contract: Contract){
         const listener = async (event: ContractEvent) => {
             const payload = event.payload.toString('utf8');
-            console.log("Event: " + event.eventName + ". Payload: " + payload);
+            log.info("Event: " + event.eventName + ". Payload: " + payload);
         };
-        console.log("Event listener started...")
+
+        log.info("Event listener started...")
 
         const checkpointer: Checkpointer = await DefaultCheckpointers.file('checkPointer');
         await contract.addContractListener(listener, {checkpointer});
@@ -58,5 +61,4 @@ class App {
 }
 
 
-const app = new App();
-app.main();
+App.main();
