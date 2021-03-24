@@ -6,26 +6,35 @@ dotenv.config();
 
 class App {
     main = async function() {   
-        const data = await AWSHelper.getAWSSecret('nu0094001-blockchain-dev-PeerCouchDBSecrets');
-        console.log(data)
-        
+        /*
+        const id = 'nu0094001-blockchain-dev-PeerCouchDBSecrets';
+        //const id = 'nu0094001-blockchain-dev-ECDSA-Key-peer-2';
+        const data = await AWSHelper.getAWSSecret(id);
+        console.log(data.SecretString)
+        */
+
+        /*
+        const ARNCA = 'arn:aws:acm-pca:us-east-1:872308410481:certificate-authority/ee2eadae-1a4e-4034-9f22-cc2626854c20'
+        const ARNCert = '';
+        const data2 = await AWSHelper.getCertByARN(ARNCert, ARNCA);
+        console.log(data2)*/
+
+
         const walletPath: string = 'wallet';
-        const orgMSPId: string = 'Org0';
-        const walletIdentityLabel: string = 'Agus';
+        const walletIdentityLabel: string = 'TheWallet';
         const certPathMSP: string = 'certs/msp/Admin@Org0-cert.pem';
         const privateKeyPathMSP: string = 'certs/msp/priv_sk';
         const certPathTLS: string = 'certs/tls/client.crt'
         const privateKeyPathTLS: string ='certs/tls/client.key'
-        const connectionProfileFilePath: string = 'network/connection-dev.yaml';
-        const channelName = 'mychannel';
-        const contractName = 'basic';
-        
-        
-        const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName)
 
-        //await this.callFunction(contract);
+        const env = process.env.ENV;
+        const orgMSPId: string = process.env.ORG_MSP_ID;
+        const connectionProfileFilePath: string = 'network/connection-profile-' + env + '.yaml';
+        const channelName = process.env.CHANNEL_NAME;
+        const contractName = process.env.CONTRACT_NAME;
 
-        await this.eventListener(contract);             
+        const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName);
+        await this.eventListener(contract);
     }
 
 
@@ -44,7 +53,7 @@ class App {
         console.log("Event listener started...")
 
         const checkpointer: Checkpointer = await DefaultCheckpointers.file('checkPointer');
-        const contractListener: ContractListener = await contract.addContractListener(listener, {checkpointer});
+        await contract.addContractListener(listener, {checkpointer});
     }
 }
 

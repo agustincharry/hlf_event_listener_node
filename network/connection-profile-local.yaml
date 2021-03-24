@@ -47,15 +47,13 @@ channels:
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
-    org0-peer1:
+      org0-peer1:
         endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
-      
 
 entityMatchers:
-  
   peer:
   - pattern: org0-peer0
     urlSubstitutionExp: grpcs://192.168.49.2:30200
