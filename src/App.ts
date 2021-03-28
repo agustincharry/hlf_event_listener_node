@@ -49,8 +49,8 @@ class App {
         const HSMSlot: number = 0;
         const privateKeySKI: string = '10';
 
-        //const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName);
-        const contract: Contract = await WalletHelper.GetContractWithConfigHSM(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName, HSMLib, HSMPin, HSMSlot, privateKeySKI);
+        const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName);
+        //const contract: Contract = await WalletHelper.GetContractWithConfigHSM(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName, HSMLib, HSMPin, HSMSlot, privateKeySKI);
         
         await this.callFunction(contract);
         //await this.eventListener(contract);

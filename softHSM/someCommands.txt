@@ -1,0 +1,33 @@
+# Install Softhsm, OpenSSl and  dependencies
+apt-get update
+apt-get install softhsm2 openssl nano -y
+apt-get install libengine-pkcs11-openssl opensc opensc-pkcs11 -y
+
+# Change owner of HSM
+sudo chown -R $USER /etc/softhsm
+sudo chown -R $USER /var/lib/softhsm
+
+
+# Initialize the token
+softhsm2-util --init-token --slot 0 --label "Token-1" --so-pin 1234 --pin 1234
+
+# Show slots
+softhsm2-util --show-slots
+
+# List objects of the HSM
+pkcs11-tool --module /usr/lib/x86_64-linux-gnu/softhsm/libsofthsm2.so -l -O
+
+
+# Generate a Elliptic Curve private key
+pkcs11-tool --module /usr/lib/x86_64-linux-gnu/softhsm/libsofthsm2.so --pin 1234 -k --id 10 --label "10" --key-type EC:prime256v1
+
+# Generate a .CSR file using the private key stored in HSM.
+OPENSSL_CONF=openssl.cnf openssl req -engine pkcs11 -keyform engine -new -key $SLOT:$KEY_ID -out server.csr -subj "/C=US/ST=California/L=San Francisco/O=Org0/OU=client/CN=Org0@Org0"
+
+
+# Generate certificate from a .CSR with CA credentials
+openssl x509 -req -in server.csr -CA ca.pem -CAkey priv_sk -CAcreateserial -out server.crt -days 10000
+
+
+# Delete all tokens
+rm -r -f /var/lib/softhsm/tokens/*
