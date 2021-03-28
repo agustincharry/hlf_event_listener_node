@@ -44,7 +44,7 @@ class App {
         const contractName = process.env.CONTRACT_NAME;
 
 
-        const HSMLib: string = '/home/hacharry/projects/hlf_event_listener_node/test/test/libsofthsm2.so';
+        const HSMLib: string = '/usr/lib/x86_64-linux-gnu/softhsm/libsofthsm2.so';
         const HSMPin: string = '1234';
         const HSMSlot: number = 0;
         const privateKeySKI: string = '10';
