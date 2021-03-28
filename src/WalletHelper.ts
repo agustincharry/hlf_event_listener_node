@@ -31,13 +31,28 @@ export class WalletHelper {
         return contract;
     }
 
-
+    /**
+     * Function used to connect to the Blockchain wiht credentials.
+     * This function will connect to the HSM which has the MSP private key.
+     * 
+     * @param {string} walletPath               Folder path which will store the wallet info.
+     * @param {string} orgMSPId                 MSP ID of the organization.
+     * @param {string} walletIdentityLabel      Label which will identify the wallet credentials.
+     * @param {string} certPathMSP              Path of the public MSP certificate .pem
+     * @param {string} certPathTLS              Path of the public TLS certificate .crt
+     * @param {string} privateKeyPathTLS        Path of the TLS private key of the certificate
+     * @param {string} connProfileFilePath      Path of the Connection Profile File .yaml
+     * @param {string} channelName              Name of the channel.
+     * @param {string} contractName             Name of the contract.
+     * @param {string} HSMLib                   Path of the HSM library or module .so or .dll
+     * @param {string} HSMPin                   PIN to authenticate in the HSM
+     * @param {number} HSMSlot                  Slot of HSM
+     * @param {string} privateKeySKI            SKI of the private key in the HSM
+     * @returns 
+     */
     static GetContractWithConfigHSM = async function(walletPath: string, orgMSPId:string, walletIdentityLabel: string, certPathMSP: string, certPathTLS: string, privateKeyPathTLS: string, connProfileFilePath: string, channelName: string, contractName: string, HSMLib: string, HSMPin: string, HSMSlot: number, privateKeySKI: string): Promise<Contract>{
         const wallet: Wallet = await Wallets.newFileSystemWallet(walletPath);
         const walletIdentityLabelTLS = walletIdentityLabel + 'TLS';
-        //const HSMLib: string = '/home/hacharry/projects/hlf_event_listener_node/test/test/libsofthsm2.so';
-        
-        
         WalletHelper.PopulateWalletFromHSM(wallet, orgMSPId, walletIdentityLabel, certPathMSP, HSMLib, HSMPin, HSMSlot, privateKeySKI);
         WalletHelper.PopulateWallet(wallet, orgMSPId, walletIdentityLabelTLS, certPathTLS, privateKeyPathTLS);
         const gateway: Gateway = await WalletHelper.ConnectToGateway(walletIdentityLabel, walletIdentityLabelTLS, wallet, connProfileFilePath);
