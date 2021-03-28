@@ -6,3 +6,4 @@ wallet
 checkPointer
 .env
 logs
+createClearCerts.sh
