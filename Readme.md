@@ -39,6 +39,12 @@ ORG_MSP_ID=Org0
 
 4. If you want to use HSM, you need to follow the steps described in ```softHSM/Readme.md```
 
+5. If you are using the next test network
+```
+https://github.com/agustincharry/hlf_k8s_cryptogen
+``` 
+You can run the ``` getEventListenerCerts.sh ``` script to populate the needed certificates.
+
 ## Run the application
 
 * ```npm run dev``` To execute the app.
