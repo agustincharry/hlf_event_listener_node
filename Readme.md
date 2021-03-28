@@ -37,7 +37,7 @@ ORG_MSP_ID=Org0
 
 3. Change the peers IP in the network/connection-profile-local.yaml
 
-4. If you want to use HSM, you need to follow the steps described in ```softHSM/steps.txt```
+4. If you want to use HSM, you need to follow the steps described in ```softHSM/Readme.md```
 
 ## Run the application
 
