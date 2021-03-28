@@ -1,8 +1,0 @@
-# Initialize the token.
-softhsm2-util --init-token --slot 0 --label "Token-1" --so-pin 1234 --pin 1234
-
-# Generate a Elliptic Curve private key.
-pkcs11-tool --module /usr/lib/x86_64-linux-gnu/softhsm/libsofthsm2.so --pin 1234 -k --id 10 --label "10" --key-type EC:prime256v1
-
-# Generate a .CSR file using the private key stored in HSM.
-docker run -v /var/lib/softhsm/tokens/:/var/lib/softhsm/tokens/ hsm:2
