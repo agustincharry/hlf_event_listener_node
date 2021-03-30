@@ -47,7 +47,7 @@ export class WalletHelper {
      * @param {string} HSMLib                   Path of the HSM library or module .so or .dll
      * @param {string} HSMPin                   PIN to authenticate in the HSM
      * @param {number} HSMSlot                  Slot of HSM
-     * @param {string} privateKeySKI            SKI of the private key in the HSM
+     * @param {string} privateKeySKI            SKI of the private key in the HSM - ID of of the private key.
      * @returns 
      */
     static GetContractWithConfigHSM = async function(walletPath: string, orgMSPId:string, walletIdentityLabel: string, certPathMSP: string, certPathTLS: string, privateKeyPathTLS: string, connProfileFilePath: string, channelName: string, contractName: string, HSMLib: string, HSMPin: string, HSMSlot: number, privateKeySKI: string): Promise<Contract>{
@@ -126,14 +126,14 @@ export class WalletHelper {
      * in a HSM.
      * This function also adds the HSM provider to the wallet.
      * 
-     * @param {Wallet} wallet                   Wallet which will store the credentials
-     * @param {string} orgMSPId                 MSP ID of the organization
+     * @param {Wallet} wallet                   Wallet which will store the credentials.
+     * @param {string} orgMSPId                 MSP ID of the organization.
      * @param {string} walletIdentityLabel      Label which will identify the wallet credentials
      * @param {string} certPath                 Path of the public certificate .pem
      * @param {string} HSMLib                   Path of the HSM library or module .so or .dll
-     * @param {string} HSMPin                   PIN to authenticate in the HSM
-     * @param {number} HSMSlot                  Slot of HSM
-     * @param {string} privateKeySKI            SKI of the private key in the HSM
+     * @param {string} HSMPin                   PIN to authenticate in the HSM.
+     * @param {number} HSMSlot                  Slot of HSM.
+     * @param {string} privateKeySKI            SKI of the private key in the HSM - ID of of the private key.
      */
     private static PopulateWalletFromHSM = async function(wallet: Wallet, orgMSPId: string, walletIdentityLabel: string, certPath: string, HSMLib: string, HSMPin: string, HSMSlot: number, privateKeySKI: string){
         const hsmProvider: HsmX509Provider = new HsmX509Provider({
