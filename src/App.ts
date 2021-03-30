@@ -8,28 +8,6 @@ dotenv.config();
 
 class App {
     static main = async function() {
-
-        this.wallet();
-
-    }
-
-    static AWStests = async function(){
-        /*
-        const id = 'nu0094001-blockchain-dev-PeerCouchDBSecrets';
-        //const id = 'nu0094001-blockchain-dev-ECDSA-Key-peer-2';
-        const data = await AWSHelper.getAWSSecret(id);
-        log.info(data.SecretString)
-        */
-
-        /*
-        const ARNCA = 'arn:aws:acm-pca:us-east-1:872308410481:certificate-authority/ee2eadae-1a4e-4034-9f22-cc2626854c20'
-        const ARNCert = 'arn:aws:acm-pca:us-east-1:872308410481:certificate-authority/ee2eadae-1a4e-4034-9f22-cc2626854c20/certificate/24b8806b62a3add92ba7befe34cdd321';
-        const data2 = await AWSHelper.getCertByARN(ARNCert, ARNCA);
-        log.info(data2)
-        */
-    }
-
-    static wallet = async function(){
         const walletPath: string = 'wallet';
         const walletIdentityLabel: string = 'TheWallet';
         const certPathMSP: string = 'certs/msp/Admin@Org0-cert.pem';
@@ -50,9 +28,14 @@ class App {
         const privateKeySKI: string = '10';
 
         const contract: Contract = await WalletHelper.GetContractWithConfig(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, privateKeyPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName);
-        //const contract: Contract = await WalletHelper.GetContractWithConfigHSM(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName, HSMLib, HSMPin, HSMSlot, privateKeySKI);
         
+        // Uncomment this line to use HSM
+        // const contract: Contract = await WalletHelper.GetContractWithConfigHSM(walletPath, orgMSPId, walletIdentityLabel, certPathMSP, certPathTLS, privateKeyPathTLS, connectionProfileFilePath, channelName, contractName, HSMLib, HSMPin, HSMSlot, privateKeySKI);
+        
+
         await this.callFunction(contract);
+
+        // Uncomment this line to start event listener
         //await this.eventListener(contract);
     }
 

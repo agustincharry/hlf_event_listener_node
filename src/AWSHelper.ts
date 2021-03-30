@@ -27,7 +27,6 @@ export class AWSHelper {
     }
     
     static getAWSSecret = async function(SecretId: string) {
-        //await this.assumeRole('arn:aws:iam::127981432191:role/nu0094001-blockchain-dev-OrdererRole');
         const secretsManager: SecretsManager = new SecretsManager({region:process.env.AWS_REGION});
         const data = await secretsManager.getSecretValue({ SecretId }).promise();
         return data;
